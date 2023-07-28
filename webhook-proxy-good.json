@@ -1,0 +1,7 @@
+{
+  "type": "Binance",
+  "env": "Mike Local",
+  "serverUrl": "https://3e8c-84-67-87-52.ngrok.io/binance/webhook",
+  "mongodbUrl": "mongodb://3.tcp.ngrok.io:14688/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false",
+  "database": "afriex_development"
+ }

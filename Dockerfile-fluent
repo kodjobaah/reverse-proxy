@@ -1,0 +1,5 @@
+FROM amazon/aws-for-fluent-bit:latest
+
+ARG build_env
+ENV build_env=$build_env
+COPY ./docker/${build_env}/fluent-bit.conf  /extra.conf

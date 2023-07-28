@@ -1,0 +1,40 @@
+  {
+   "name": "aws-otel-collector",
+   "image": "amazon/aws-otel-collector",
+   "portMappings": [
+     {
+       "hostPort": 2000,
+       "protocol": "udp",
+       "containerPort": 2000
+     },
+     {
+       "hostPort": 4317,
+       "protocol": "tcp",
+       "containerPort": 4317
+     },
+     {
+       "hostPort": 8125,
+       "protocol": "udp",
+       "containerPort": 8125
+     }
+   ],
+   "essential": true,
+   "logConfiguration": {
+     "logDriver": "awslogs",
+     "options": {
+       "awslogs-group": "/ecs/webhook-proxy-${env}",
+       "awslogs-region": "${aws_region}",
+       "awslog"logConfiguration": {
+                 "logDriver": "awslogs",
+                 "options": {
+                   "awslogs-group": "/ecs/webhook-proxy-${env}",
+                   "awslogs-region": "${aws_region}",
+                   "awslogs-stream-prefix": "aws-otel-collector",
+                   "awslogs-create-group": "True"
+                 }
+               }
+              }s-stream-prefix": "aws-otel-collector-gateway",
+       "awslogs-create-group": "True"
+     }
+   }
+  }

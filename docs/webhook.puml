@@ -1,0 +1,23 @@
+@startuml webhook
+actor Binance as binance
+participant WebHookProxy as WebHookProxy
+participant Server as Server
+database Dynamodb as Dynamodb
+database Mongodb as mongodb
+autonumber
+binance -> WebHookProxy : order completed
+WebHookProxy -> Dynamodb: Fetch configured servers
+    loop Configured servers
+        WebHookProxy -> mongodb : connect and fetch record
+        alt Record Exist 
+            WebHookProxy --> Server: Forward Request to configured server
+            WebHookProxy -> WebHookProxy: Update Configured Servers State to true
+        else
+           WebHookProxy -> WebHookProxy: Update Configured Servers State to false
+        end
+    end
+WebHookProxy -> WebHookProxy: Check if all Configured Server states are false
+    alt All false
+        WebHookProxy -> binance: Failure Message
+    end
+@enduml

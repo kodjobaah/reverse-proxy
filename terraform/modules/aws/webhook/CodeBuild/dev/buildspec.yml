@@ -1,0 +1,38 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+
+  pre_build:
+    commands:
+      - echo Logging in to Docker HUB / Amazon ECR....
+      - aws --version
+      - echo $hub_username
+      - echo $hub_password
+      - docker login -u $hub_username -p $hub_password
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=$${COMMIT_HASH:=latest}
+      - REPOSITORY_WEBHOOK_URI="${webhook_uri}"
+      - CLUSTER_NAME="${cluster_name}"
+      - VERSION=`cat version.txt`
+      - ENV="${env}"
+      - LOG_GROUP="${log_group}"
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - cd proxy
+      - docker build -t webhook-proxy .
+      - docker tag webhook-proxy:latest $REPOSITORY_WEBHOOK_URI:latest
+      - docker tag webhook-proxy:latest $REPOSITORY_WEBHOOK_URI:$VERSION
+      - cd ..
+  post_build:
+    commands:
+      - aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 625194385885.dkr.ecr.eu-west-2.amazonaws.com
+      - echo Build completed on `date`
+      - echo pushing to repo
+      - docker push $REPOSITORY_WEBHOOK_URI:latest
+      - ./scripts/redeploy-services.sh $CLUSTER_NAME
+    file-format: "JUNITXML"

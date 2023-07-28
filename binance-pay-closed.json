@@ -1,0 +1,6 @@
+{
+  "bizType": "PAY",
+  "data": "{\"merchantTradeNo\":\"3b6ae560985f04b9fac4148e089025a2\",\"totalFee\":20.00000000,\"transactTime\":1647284411946,\"currency\":\"USDT\",\"commission\":0,\"productType\":\"01\",\"productName\":\"cash\",\"tradeType\":\"APP\"}",
+  "bizId": "165963835185414144",
+  "bizStatus": "PAY_CLOSED"
+}
